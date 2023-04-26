@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/LilaRest/prismary/compare/v1.1.0...v1.2.0) (2023-04-26)
+
+
+### Features
+
+* start implementing file-based configs ([6d55201](https://github.com/LilaRest/prismary/commit/6d55201994cde9141da740fd41f34b7d551a133d))
+
 # [1.1.0](https://github.com/LilaRest/prismary/compare/v1.0.0...v1.1.0) (2023-04-26)
 
 
