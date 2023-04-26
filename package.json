@@ -1,6 +1,6 @@
 {
   "name": "prismary",
-  "version": "0.0.1",
+  "version": "0.0.0-development",
   "license": "MIT",
   "author": "Lila Rest",
   "homepage": "https://github.com/LilaRest/prismary",
@@ -15,7 +15,8 @@
     "prismary": "dist/generator.js"
   },
   "scripts": {
-    "build": "tsc && bash ./scripts/add-templates-to-dist.bash"
+    "build": "tsc && bash ./scripts/add-templates-to-dist.bash",
+    "semantic-release": "semantic-release"
   },
   "dependencies": {
     "@casl/ability": "^6.4.0",
@@ -31,11 +32,16 @@
     "@types/node": "^18.11.18",
     "cz-conventional-changelog": "^3.3.0",
     "ts-node": "^10.9.1",
-    "typescript": "^4.9.4"
+    "typescript": "^4.9.4",
+    "semantic-release": "^21.0.1"
   },
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LilaRest/prismary.git"
   }
 }
