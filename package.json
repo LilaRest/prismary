@@ -11,6 +11,7 @@
     "zod",
     "casl"
   ],
+  "main": "dist/index.js",
   "bin": {
     "prismary": "dist/generator.js"
   },
@@ -33,6 +34,7 @@
     "@semantic-release/git": "^10.0.1",
     "@types/node": "^18.11.18",
     "cz-conventional-changelog": "^3.3.0",
+    "prismary": "link:",
     "semantic-release": "^21.0.1",
     "ts-node": "^10.9.1",
     "typescript": "^5.0.0"

@@ -2,7 +2,7 @@
 import { version } from "../package.json";
 import { generatorHandler, type EnvValue } from "@prisma/generator-helper";
 import { parseEnvValue } from "@prisma/internals";
-import { configSchema } from "./config";
+import { getPrismaryConfig } from "./config";
 import { promises as fs } from "fs";
 import { Variants } from "./variants";
 import { Project, VariableDeclarationKind } from "ts-morph";
@@ -18,7 +18,7 @@ generatorHandler({
   }),
   onGenerate: async (options) => {
     // Retrive & validate configurations
-    let configs = configSchema.parse(options.generator.config);
+    let configs = getPrismaryConfig(options.generator.config.configFile);
 
     // Retrieve output directory path and create it recursively if missing
     const outputDirPath = parseEnvValue(options.generator.output as EnvValue);
@@ -78,12 +78,12 @@ generatorHandler({
         }
 
         // Import custom schema if a "zodFilePath" is given
-        if (configs.zodFilePath) {
-          variationFile.addImportDeclaration({
-            namespaceImport: "custom",
-            moduleSpecifier: configs.zodFilePath
-          });
-        }
+        // if (configs.zodFilePath) {
+        //   variationFile.addImportDeclaration({
+        //     namespaceImport: "custom",
+        //     moduleSpecifier: configs.zodFilePath
+        //   });
+        // }
 
         // Write zod rules infered from fields types and user comments
         variationFile.addVariableStatement({

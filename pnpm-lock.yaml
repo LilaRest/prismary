@@ -39,6 +39,9 @@ devDependencies:
   cz-conventional-changelog:
     specifier: ^3.3.0
     version: 3.3.0
+  prismary:
+    specifier: 'link:'
+    version: 'link:'
   semantic-release:
     specifier: ^21.0.1
     version: 21.0.1

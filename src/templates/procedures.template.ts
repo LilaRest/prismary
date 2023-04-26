@@ -38,6 +38,7 @@ const notSupportedError = (feature: string) => new TRPCError({
   message: `"${feature}" is not supported yet by Prismary.`
 });
 
+// The whole Prisma Client API reference is here: https://www.prisma.io/docs/reference/api-reference/prisma-client-reference
 
 export const userProcedures = {
   create: publicProcedure
