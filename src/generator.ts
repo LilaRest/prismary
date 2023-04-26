@@ -1,4 +1,4 @@
-// @ts-ignore Importing package.json for automated synchronization of version numbers
+// @ts-ignore Importing package.json for automated synchronization of version numbers 
 import { version } from "../package.json";
 import { generatorHandler, type EnvValue } from "@prisma/generator-helper";
 import { parseEnvValue } from "@prisma/internals";
