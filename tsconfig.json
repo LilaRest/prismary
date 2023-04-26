@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "es2019",
+    "lib": ["es2019", "DOM"],
+    "noImplicitAny": true,
+    "moduleResolution": "node",
+    "declaration": true,
+    "sourceMap": true,
+    "resolveJsonModule": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "typeRoots": ["src/types.ts"],
+    "skipLibCheck": true,
+    "strict": true
+  },
+  "include": ["./src/**/*.ts"],
+  "exclude": ["**/*.template.ts"]
+}
