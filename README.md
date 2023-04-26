@@ -1,6 +1,6 @@
 # Prismary
 
-Auto-generated but extensible tRPC procedures from Prisma schema, with Zod validations, and CASL permissions.
+Auto-generated but extensible tRPC procedures from Prisma schema, with Zod validations and CASL permissions.
 
 ## Limitations
 
