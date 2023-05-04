@@ -26,6 +26,24 @@ export function definePrismaryConfig (configs: FileConfigSchema) {
   return fileConfigSchema.parse(configs);
 };
 
-export function getPrismaryConfig (configFilePath: string) {
+const commonConfigPaths = [
+  // "~/prisma/prismary.config.ts",
+  // "~/src/prisma/prismary.config.ts",
+  "/home/lil/fi/POWs/Drops/app/src/prisma/prismary.config.ts"
+];
 
+let config: FileConfigSchema | undefined;
+export async function getPrismaryConfig (configFilePath: string): Promise<FileConfigSchema | undefined> {
+  if (config) return config;
+  try {
+    config = await import(configFilePath);
+  } catch (e) {
+    console.log(e);
+    for (const commonConfigPath of commonConfigPaths) {
+      try {
+        config = await import(commonConfigPath);
+      } catch (e) { console.log(e); }
+    }
+  }
+  return config;
 }

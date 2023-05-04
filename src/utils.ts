@@ -63,3 +63,33 @@ export function getZodSchemaFromField (field: DMMF.Field, variant: Variant) {
 
   return zodSchema;
 };
+
+
+export type SetToUnion<T> = T extends Set<infer I> ? I : never;
+
+
+type SelectOrIncludeClause = {
+  type: "include" | "select";
+  include?: object;
+  select?: object;
+};
+/**
+ * - At each level include takes the priority
+ */
+export function mergeSelectOrIncludeClauses (clause1: SelectOrIncludeClause, clause2: SelectOrIncludeClause) {
+  const mergedClauseType = [clause1.type, clause2.type].includes("include") ? "include" : "select";
+  const mergedClause: SelectOrIncludeClause = {
+    type: mergedClauseType,
+    [mergedClauseType]: {}
+  };
+  _mergeSelectOrIncludeClauses(clause1, clause2, mergedClause[mergedClauseType]);
+  const bothClausesAreSame = clause2.type === clause2.type;
+  if (mergedClauseType === "include") {
+    if (bothClausesAreSame) return;
+    mergeSelectOrIncludeClauses;
+  }
+}
+
+function _mergeSelectOrIncludeClauses (clause1: SelectOrIncludeClause, clause2: SelectOrIncludeClause, receiver?: object) {
+
+}

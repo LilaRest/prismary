@@ -18,7 +18,8 @@ generatorHandler({
   }),
   onGenerate: async (options) => {
     // Retrive & validate configurations
-    let configs = getPrismaryConfig(options.generator.config.configFile);
+    // let config = await getPrismaryConfig(options.generator.config.configFilePath);
+    // if (!config) throw new Error("Prismary cannot retrieve your configuration object.");
 
     // Retrieve output directory path and create it recursively if missing
     const outputDirPath = parseEnvValue(options.generator.output as EnvValue);

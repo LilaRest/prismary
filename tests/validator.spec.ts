@@ -1,0 +1,106 @@
+// import * as prismary from "../src";
+// import { describe, expect, test } from '@jest/globals';
+// import { PrismaClient, User, Base, Prisma } from '@prisma/client';
+// import { PureAbility, AbilityBuilder, subject } from '@casl/ability';
+// import { createPrismaAbility, PrismaQuery, Subjects } from '@casl/prisma';
+// import { UserSchema } from "../prisma/prismary/UserSchema";
+
+// /** 
+//  * Available models
+//  * - User:     Represents a user model that have certain rights
+//  * - Base:     Represents a base model from which all non-user requests will start
+//  * - Degree1:  Represents a degree 1 data related to Base model
+//  * - Degree2:  Represents a degree 1 data related to Degree1, and a degree 2 related to Base model
+//  */
+
+// /**
+//  * Available permissions
+//  * - manage:     Can anything on selected data
+//  *   - create:   Can create new rows of selected data
+//  *   - read:     Can read selected data
+//  *     - infer:  Can perform actions that may allow infer selected data
+//  *   - update:   Can mutate selected data
+//  *   - delete:   Can delete selected data
+//  * 
+//  * They are sorted by power hierarchy, where each parent has all its children permissions.
+//  */
+
+// /* Available actions (from prisma.base)
+// - findUnique
+//   - read base row
+//   - read base row and degree1 row
+//   - read base row and degree2 row
+// */
+
+
+
+// function buildHypotheticalUser (whereStatment: Prisma.UserWhereInput) {
+//   const hypotheticalUser = {};
+//   for (const [key, value] of Object.keys(whereStatement)) {
+
+//   }
+// }
+
+// const user = { id: 1 };
+
+// type AppSubjects = 'all' | Subjects<{
+//   "all": User & Base;
+//   User: User;
+//   Base: Base;
+// }>;
+// type AppAbility = PureAbility<[string, AppSubjects], PrismaQuery>;
+// const { can, cannot, build } = new AbilityBuilder<AppAbility>(createPrismaAbility);
+
+// // cannot("create", "User"); // Should be handled by a handmade tRPC endpoint
+// // can("read", "Base", { userId: user.id });
+// // can("manage", "all", { userId: user.id });
+// can("manage", "User", {
+//   name: {
+//     endsWith: "baa",
+//     startsWith: "jane"
+//   },
+//   email: {
+//     not: "jonhy@bgood.fr"
+//   }
+// });
+
+// const whereStatement: Prisma.UserWhereInput = {
+//   // email: {
+//   //   startsWith: "john"
+//   // },
+//   // name: {
+//   //   // equals: "John",
+//   //   startsWith: "jak"
+//   // }
+// };
+
+// const ability = build();
+
+// //@ts-ignore
+// console.log(ability.can("manage", subject("User", {
+//   id: 22,
+//   name: "janedaabaa",
+//   email: "jonhy@bgood.fr",
+// })));
+// // console.log(ability);
+// // console.log(ability)
+
+// /**
+//  * List of tests:
+//  * - Retrieve self user data from user
+//  *   - Should work if
+//  *     - the user is allowed to "read" itself
+//  * - Retrieve self user data from base
+//  *   - Should work if
+//  *     - the user is allowed to "read" itself
+//  *     - the user is allowed to "read" base users
+//  * - Retrieve self user data from degree2
+//  *   - Should work if
+//  *     - the user is allowed to "read" itself
+//  *     - the user is allowed to "read" base users
+//  *     - the user is allowed to "read" degree2 bases
+//  * - Retrieve other user data from user
+//  * - Retrieve bases data from user
+//  * - Retrieve degree1 data from user
+//  */
+// // ability.can();

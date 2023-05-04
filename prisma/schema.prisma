@@ -2,20 +2,23 @@ generator client {
   provider = "prisma-client-js"
 }
 
+generator prismary {
+  provider = "prismary"
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-model Placeholder {
+model User {
   id    Int     @id @default(autoincrement())
   email String  @unique
   name  String?
-  others Other[]
+  bases Base[]
 }
 
-model Other {
-  placeholder Placeholder @relation(fields: [placeholderId], references: [id])
-  placeholderId Int @id
-  @@index([placeholderId])
+model Base {
+  user User @relation(fields: [userId], references: [id])
+  userId Int @id
 }
