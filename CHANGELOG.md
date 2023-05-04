@@ -1,3 +1,11 @@
+# [1.4.0](https://github.com/LilaRest/prismary/compare/v1.3.0...v1.4.0) (2023-05-04)
+
+
+### Features
+
+* improved version of mergeSelectOrIncludeClauses() + start writing tests for it ([40fcfd4](https://github.com/LilaRest/prismary/commit/40fcfd44cc45a2f79999b37b643c72a33a9c65b6))
+* release first version of mergeSelectOrIncludeClauses function ([c395845](https://github.com/LilaRest/prismary/commit/c3958454d19be501d78ffa8ce532644454051b76))
+
 # [1.3.0](https://github.com/LilaRest/prismary/compare/v1.2.0...v1.3.0) (2023-05-04)
 
 
