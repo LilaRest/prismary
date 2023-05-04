@@ -1,11 +1,12 @@
 // import * as prismary from "../src";
 // import { describe, expect, test } from '@jest/globals';
-// import { PrismaClient, User, Base, Prisma } from '@prisma/client';
+import { PrismaClient, User, Base, Prisma } from '@prisma/client';
 // import { PureAbility, AbilityBuilder, subject } from '@casl/ability';
 // import { createPrismaAbility, PrismaQuery, Subjects } from '@casl/prisma';
 // import { UserSchema } from "../prisma/prismary/UserSchema";
 
-// /** 
+const prisma = new PrismaClient();
+// /**
 //  * Available models
 //  * - User:     Represents a user model that have certain rights
 //  * - Base:     Represents a base model from which all non-user requests will start

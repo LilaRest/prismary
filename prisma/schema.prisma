@@ -2,9 +2,9 @@ generator client {
   provider = "prisma-client-js"
 }
 
-generator prismary {
-  provider = "prismary"
-}
+// generator prismary {
+//   provider = "prismary"
+// }
 
 datasource db {
   provider = "postgresql"
@@ -15,10 +15,10 @@ model User {
   id    Int     @id @default(autoincrement())
   email String  @unique
   name  String?
-  bases Base[]
+  bases Baseiooo[]
 }
 
-model Base {
+model Baseiooo {
   user User @relation(fields: [userId], references: [id])
   userId Int @id
 }

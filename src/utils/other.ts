@@ -2,8 +2,8 @@ import type { SourceFile } from 'ts-morph';
 import { readFile } from 'fs/promises';
 import { join, resolve } from "path";
 import { type DMMF } from "@prisma/generator-helper";
-import { type Variant } from "./variants";
-
+import { type Variant } from "../variants";
+import { performance } from 'perf_hooks';
 
 export function writeArray (sourceFile: SourceFile, array: string[], newLine = true) {
   sourceFile.addStatements((writer) => {
@@ -64,32 +64,5 @@ export function getZodSchemaFromField (field: DMMF.Field, variant: Variant) {
   return zodSchema;
 };
 
-
+/* Extract a given set value as a union type */
 export type SetToUnion<T> = T extends Set<infer I> ? I : never;
-
-
-type SelectOrIncludeClause = {
-  type: "include" | "select";
-  include?: object;
-  select?: object;
-};
-/**
- * - At each level include takes the priority
- */
-export function mergeSelectOrIncludeClauses (clause1: SelectOrIncludeClause, clause2: SelectOrIncludeClause) {
-  const mergedClauseType = [clause1.type, clause2.type].includes("include") ? "include" : "select";
-  const mergedClause: SelectOrIncludeClause = {
-    type: mergedClauseType,
-    [mergedClauseType]: {}
-  };
-  _mergeSelectOrIncludeClauses(clause1, clause2, mergedClause[mergedClauseType]);
-  const bothClausesAreSame = clause2.type === clause2.type;
-  if (mergedClauseType === "include") {
-    if (bothClausesAreSame) return;
-    mergeSelectOrIncludeClauses;
-  }
-}
-
-function _mergeSelectOrIncludeClauses (clause1: SelectOrIncludeClause, clause2: SelectOrIncludeClause, receiver?: object) {
-
-}

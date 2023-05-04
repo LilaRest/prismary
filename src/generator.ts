@@ -6,7 +6,7 @@ import { getPrismaryConfig } from "./config";
 import { promises as fs } from "fs";
 import { Variants } from "./variants";
 import { Project, VariableDeclarationKind } from "ts-morph";
-import { writeArray, getTemplate, buildVariationName, getZodSchemaFromField } from "./utils";
+import { writeArray, getTemplate, buildVariationName, getZodSchemaFromField } from "./utils/other";
 
 
 generatorHandler({

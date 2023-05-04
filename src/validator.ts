@@ -31,6 +31,7 @@ const modelsSpecs = {
     }
   }
 } as { [key: string]: any; };
+
 const eventsSelectOrIncludeStatements = {
   user: {
     type: "include",
@@ -240,16 +241,16 @@ class ValidatedQuery {
 
 
 
-          else if (parentClauses.has(key as ParentClause)) {
-            const clauseActions = parentClausesActions[key as ParentClause];
-            this.stacks.actions.push(clauseActions);
-            this._prepare(keyValue, readBody, requirements);
-            this.stacks.actions.pop();
-          }
+          // else if (parentClauses.has(key as ParentClause)) {
+          //   const clauseActions = parentClausesActions[key as ParentClause];
+          //   this.stacks.actions.push(clauseActions);
+          //   this._prepare(keyValue, readBody, requirements);
+          //   this.stacks.actions.pop();
+          // }
 
-          else if (extendClauses.has(key as ExtendClause)) {
-            this._prepare(keyValue, readBody, requirements);
-          }
+          // else if (extendClauses.has(key as ExtendClause)) {
+          //   this._prepare(keyValue, readBody, requirements);
+          // }
         }
       }
     }
@@ -314,13 +315,16 @@ class ValidatedQuery {
 
 
 const prisma = new PrismaClient(); // Should be replaced by user instance
-const validatedQuery = new ValidatedQuery("User", "findMany", {
-  where: {
-    email: {
-      equals: "john@doe.com"
-    }
-  }
-});
+// const validatedQuery = new ValidatedQuery("User", "findMany", {
+//   where: {
+//     email: {
+//       equals: "john@doe.com"
+//     }
+//   }
+// });
 
-validatedQuery.send()
-  .then(res => console.log(res));
+// validatedQuery.send()
+//   .then(res => console.log(res));
+
+
+prisma.user.findMany();

@@ -1,4 +1,4 @@
-import { type SetToUnion } from "./utils";
+import { type SetToUnion } from "./utils/other";
 import { type Action } from "./types";
 
 /**
@@ -142,7 +142,10 @@ export const notSupportedClauses = new Set([
   "findUniqueOrThrow", "findFirstOrThrow", "aggregate", "groupBy",
 
   // Other
-  "rejectOnNotFound"
+  "rejectOnNotFound",
+
+  // Raw database access
+  // "queryRaw", "executeRaw", "findRaw", "runCommandRaw"
 ] as const);
 export type NotSupportedClause = SetToUnion<typeof notSupportedClauses>;
 
