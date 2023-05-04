@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/LilaRest/prismary/compare/v1.2.0...v1.3.0) (2023-05-04)
+
+
+### Features
+
+* step commit, the new validator design is prototyped ([2358e83](https://github.com/LilaRest/prismary/commit/2358e83d2412802d73a25e3293a8001c726f95fe))
+
 # [1.2.0](https://github.com/LilaRest/prismary/compare/v1.1.0...v1.2.0) (2023-04-26)
 
 
