@@ -1,9 +1,9 @@
-import { describe, expect, test, it } from '@jest/globals';
+import { describe, expect, it } from '@jest/globals';
 import { clauses, parentClauses, extendClauses, ignoredClauses, notSupportedClauses } from "../src/clauses";
 
-describe("Clauses", () => {
+describe("clauses.ts file", () => {
   const implementedClauses = new Set([...parentClauses, ...extendClauses, ...ignoredClauses, ...notSupportedClauses]);
-  it("should be all implemented", () => {
+  it("should implement all clauses", () => {
     expect(implementedClauses).toBe(clauses);
   });
 });

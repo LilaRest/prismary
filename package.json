@@ -18,7 +18,8 @@
   "scripts": {
     "build": "tsc && bash ./scripts/add-templates-to-dist.bash",
     "test": "jest",
-    "semantic-release": "semantic-release"
+    "semantic-release": "semantic-release",
+    "docs:dev": "typedoc src/"
   },
   "dependencies": {
     "@casl/ability": "^6.4.0",
