@@ -4,6 +4,8 @@ import { clauses, parentClauses, extendClauses, ignoredClauses, notSupportedClau
 describe("clauses.ts file", () => {
   const implementedClauses = new Set([...parentClauses, ...extendClauses, ...ignoredClauses, ...notSupportedClauses]);
   it("should implement all clauses", () => {
-    expect(implementedClauses).toEqual(clauses);
+    const arr1 = Array.from(implementedClauses).sort();
+    const arr2 = Array.from(clauses).sort();
+    expect(arr1).toBe(arr2);
   });
 });

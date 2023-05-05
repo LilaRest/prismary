@@ -17,7 +17,9 @@
   },
   "scripts": {
     "build": "tsc && bash ./scripts/add-templates-to-dist.bash",
-    "test": "vitest run --coverage",
+    "test": "vitest",
+    "bench": "vitest bench --run",
+    "coverage": "vitest run --coverage",
     "semantic-release": "semantic-release",
     "docs:dev": "typedoc src/"
   },

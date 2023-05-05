@@ -68,7 +68,7 @@ describe("mergeSelectOrIncludeClauses()", () => {
             include: {
               posts: {
                 select: {
-                  content: true,        // Redundant, already selected by include
+                  content: true,   // Redundant, already selected by include
                   datetime: true   // Redundant, already selected by include
                 }
               }
@@ -86,19 +86,20 @@ describe("mergeSelectOrIncludeClauses()", () => {
       });
     });
 
-    it("should discard select clause if it only mentions fields already selected by an include clause at the same level", () => {
+    it.todo("should discard select clause if it only mentions fields already selected by an include clause at the same level", () => {
       // TODO
     });
   });
 
-  describe("merging two 'select' clauses together", () => {
+  describe.todo("merging two 'select' clauses together", () => {
     // TODO
   });
 
-  describe("merging two 'include' clauses together", () => {
+  describe.todo("merging two 'include' clauses together", () => {
     // TODO
   });
 });
+
 
 
 /*
