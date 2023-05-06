@@ -143,9 +143,6 @@ export const notSupportedClauses = new Set([
 
   // Other
   "rejectOnNotFound"
-
-  // Raw database access
-  // "queryRaw", "executeRaw", "findRaw", "runCommandRaw"
 ] as const);
 export type NotSupportedClause = SetToUnion<typeof notSupportedClauses>;
 

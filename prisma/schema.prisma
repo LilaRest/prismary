@@ -1,3 +1,24 @@
+// This minimal Prisma schema is used for Prismary testing.
+// For this reason it aims to:
+// - Use features supported by all DBs
+// - Provide access to different kind of:
+//   - scalar fields
+//   - relations fields
+//   - degrees of relation
+//
+// Here is a visual representation of the current schema:
+//
+//               ┌──┐
+//               │  │ 
+//               *  *  
+//  Profile 1──1 User 1───────┐
+//                 1          │
+//                 │          │
+//                 *          *
+//               Post 1──* Comment 
+      
+
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -12,13 +33,43 @@ datasource db {
 }
 
 model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
-  bases Baseiooo[]
+  id         Int       @id @default(autoincrement())
+  email      String    @unique
+  password   String
+  profileId  Int?
+  profile    Profile?
+  friends    User[]    @relation("UserFriends")
+  friendOf   User[]    @relation("UserFriends")
+  posts      Post[]
+  comments   Comment[]
 }
 
-model Baseiooo {
-  user User @relation(fields: [userId], references: [id])
-  userId Int @id
+model Profile {
+  id         Int      @id @default(autoincrement())
+  bio        String
+  isPrivate  Boolean
+  age        Int
+  userId     Int      @unique
+  user       User     @relation(fields: [userId], references: [id])
+}
+
+model Post {
+  id        Int       @id @default(autoincrement())
+  title     String
+  content   String
+  rating    Float
+  authorId  Int
+  createdAt DateTime @default(now())
+  author    User      @relation(fields: [authorId], references: [id])
+  comments  Comment[]
+}
+
+model Comment {
+  id        Int     @id @default(autoincrement())
+  text      String
+  createdAt DateTime @default(now())
+  postId    Int
+  authorId  Int
+  post      Post    @relation(fields: [postId], references: [id])
+  author    User    @relation(fields: [authorId], references: [id])
 }

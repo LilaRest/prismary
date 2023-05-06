@@ -23,14 +23,16 @@
  * }
  * ```
  * 
- * Where {...} is just another nested object of this type.
+ * Where:
+ * - {...} is just another nested object of this type,
+ * - data must be a relationship field in 'include' clause
  * 
  * 
  * ## Performances & validation
  * 
- * Note that to keep those pieces of code as performant as possible, only the minimum necessary validations 
- * are performed at runtime on the given values.
  * TS is enforcing type safety at write and compile time only.
+ * In order to keep those pieces of code as performant as possible, only the minimum necessary validations 
+ * are performed at runtime on the given inputs.
  * 
  * 
  * ## Terminology
@@ -50,6 +52,7 @@
  *   where x is a "sub body"
  */
 
+import { modelsSpecs } from "../toGenerate";
 
 /**
  * Represents a {@link queryBody} object that only supports `include` and `select` clauses.
@@ -84,15 +87,123 @@ interface SelectOrIncludeBody {
  * @param body2 
  * @returns 
  */
-export function mergeSelectOrIncludeClauses (body1: QueryBody, body2: QueryBody): QueryBody {
-  // const startTime = performance.now();
-  const mergedBody = _mergeSelectOrIncludeClauses(body1, body2);
-  // console.log("In: ", performance.now() - startTime, "ms");
+export function mergeSelectOrIncludeClauses (model: string, body1: QueryBody, body2: QueryBody): QueryBody {
+  const mergedBody = _mergeSelectOrIncludeClauses(model, body1, body2);
   return mergedBody;
 }
 
+function _mergeSelectOrIncludeClauses (
+  model: string,
+  qBody1: QueryBody,
+  qBody2: QueryBody
+): QueryBody {
 
-function _mergeSelectOrIncludeClauses (body1: QueryBody, body2: QueryBody): QueryBody {
+  // Retrieve given clauses types
+  const type1 = qBody1.include ? "include" : "select";
+  const type2 = qBody2.include ? "include" : "select";
+  const body1 = qBody1[type1]!;
+  const body2 = qBody2[type2]!;
+
+  // Retrieve the type of the merged clause and provides an empty body
+  const typeMerged = [type1, type2].includes("include") ? "include" : "select";
+  let bodyMerged: SelectOrIncludeBody = {};
+
+  // Iterate over all fields of body1
+  for (const [key1, value1] of Object.entries(body1)) {
+    // Try to retrieve the relation model associated with this key (else is undefined)
+    const relationModel = modelsSpecs[model].relations[key1];
+
+    // If the field is also mentionned in body2
+    if (key1 in body2) {
+      const value2 = body2[key1];
+
+      // If both values are true, set field to true
+      if (value1 === true && value2 === true) bodyMerged[key1] = true;
+
+      // If one of both values is a sub-body
+      else if (value1 === true || value2 === true) {
+        // Retrieve concerned sub-body
+        const value = value1 === true ? value2 : value1;
+
+        if (typeMerged === "include") {
+          // Set field value to sub-body if this one includes relations fields
+          if (Object.keys(value).filter(k => modelsSpecs[model].relations[k]).length) {
+            bodyMerged[key1] = value;
+          }
+
+          // Else set it to true
+          else bodyMerged[key1] = true;
+        }
+        else bodyMerged[key1] = value;
+      }
+
+      // Else if both values are sub-bodies, merge them together
+      else bodyMerged[key1] = _mergeSelectOrIncludeClauses(relationModel, value1, value2);
+
+      delete body2[key1];
+    }
+
+    // Of if the field is only in body1
+    else {
+
+      if (typeMerged === "include") {
+        // Append field if it is relationshipone
+        if (relationModel) bodyMerged[key1] = value1;
+      }
+      else bodyMerged[key1] = value1;
+    }
+  }
+
+  // Handle body2 remaining fields
+  if (typeMerged === "include") {
+    // If type2 is also "include", include all remaining fields
+    if (type2 === "include") bodyMerged = { ...bodyMerged, ...body2 };
+
+    // Else appends relations fields only
+    else {
+      const relationFields = Object.entries(body2).filter(([key]) => modelsSpecs[model].relations[key]);
+      if (relationFields.length) bodyMerged = { ...bodyMerged, ...Object.fromEntries(relationFields) };
+    }
+  }
+  else if (typeMerged === "select") bodyMerged = { ...bodyMerged, ...body2 };
+  else throw new Error("Unhandled scenario");
+
+  // Build and return a QueryBody object from typeMerged and bodyMerged
+  return { [typeMerged]: bodyMerged } as QueryBody;
+}
+
+
+
+
+console.log(JSON.stringify(mergeSelectOrIncludeClauses(
+  "user",
+  {
+    include: {
+      bases: true,
+      friends: true
+    }
+  },
+  {
+    select: {
+      name: true,
+      bases: true,
+      friends: {
+        select: {
+          email: true
+        }
+      }
+    }
+  }
+), null, 2));
+
+
+
+
+
+
+
+
+function _mergeSelectOrIncludeClausesOld (model: string, body1: QueryBody, body2: QueryBody): QueryBody {
 
   const mergedBody: Partial<QueryBody> = {};
 
@@ -116,22 +227,28 @@ function _mergeSelectOrIncludeClauses (body1: QueryBody, body2: QueryBody): Quer
     for (const [key, value] of Object.entries(selectBody)) {
 
       // Ignore top-level scalar fields of `select` body, as they are already implicitely included by the include clause
-      if (value !== true) {
+      const relationModel = modelsSpecs[model].relations[key];
+      if (value !== true || relationModel) {
 
         // If key is also included in the `include` clause body
         if (key in includeBody) {
 
-          // And if it also contains a sub-body
+          // And if they both contains a sub-body
           const includedBodyValue = includeBody[key];
-          if (includedBodyValue !== true) {
+          if (value !== true && includedBodyValue !== true) {
 
             // Merge the two sub-bodies together
-            mergedBody[typeMerged]![key] = _mergeSelectOrIncludeClauses(value, includedBodyValue);
+            mergedBody[typeMerged]![key] = _mergeSelectOrIncludeClauses(relationModel, value, includedBodyValue);
           }
 
-          // Else, if the `select` clause key holds detailed relationships selectors reflect those in the
-          // new `include`
-          else {
+          // If only `include` contains a sub-body.
+          else if (value === true && includedBodyValue !== true) {
+            mergedBody[typeMerged]![key] = includedBodyValue;
+          }
+
+          // If only `select` contains a sub-body
+          else if (value !== true && includedBodyValue === true) {
+            // Else, if the `select` clause key holds detailed relationships selectors reflect those in the new `include`
             if (value.include) {
               mergedBody[typeMerged]![key] = {
                 include: value.include
@@ -142,7 +259,8 @@ function _mergeSelectOrIncludeClauses (body1: QueryBody, body2: QueryBody): Quer
               // Retrieve all non-scalar fiels of the sub `select` body
               const nonScalarFields: any = {};
               for (const [k, v] of Object.entries(value.select)) {
-                if (v !== true) nonScalarFields[k] = v;
+                const subRelationModel = modelsSpecs[key].relations[k];
+                if (v !== true || subRelationModel) nonScalarFields[k] = v;
               }
 
               // If some non-scalar fields have been found, append the sub-select body
@@ -156,6 +274,9 @@ function _mergeSelectOrIncludeClauses (body1: QueryBody, body2: QueryBody): Quer
           }
           delete includeBody[key];
         }
+
+        // Else simply append it to the mergedBody as is
+        else mergedBody[typeMerged]![key] = value;
       }
     }
     mergedBody[typeMerged] = { ...mergedBody[typeMerged], ...includeBody };
@@ -190,7 +311,9 @@ function _mergeSelectOrIncludeClauses (body1: QueryBody, body2: QueryBody): Quer
         else {
 
           // Merge the sub-bodies  together
+          const relationModel = modelsSpecs[model].relations[key];
           mergedBody[typeMerged]![key] = _mergeSelectOrIncludeClauses(
+            relationModel,
             body1[type]![key] as QueryBody,
             body2[type]![key] as QueryBody
           );

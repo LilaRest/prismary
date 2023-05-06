@@ -7,7 +7,7 @@ describe("mergeSelectOrIncludeClauses()", () => {
     it("should discard 'select' clause if it only mentions fields already selected by an 'include' clause at the same level", () => {
       // Top-level
       expect(
-        mergeSelectOrIncludeClauses(
+        mergeSelectOrIncludeClauses("user",
           {
             include: {
               posts: true
@@ -30,6 +30,7 @@ describe("mergeSelectOrIncludeClauses()", () => {
       // Nested
       expect(
         mergeSelectOrIncludeClauses(
+          "user",
           {
             include: {
               posts: true
@@ -54,7 +55,7 @@ describe("mergeSelectOrIncludeClauses()", () => {
 
       // Highly nested
       expect(
-        mergeSelectOrIncludeClauses(
+        mergeSelectOrIncludeClauses("user",
           {
             include: {
               posts: {
@@ -86,8 +87,38 @@ describe("mergeSelectOrIncludeClauses()", () => {
       });
     });
 
-    it.todo("should discard select clause if it only mentions fields already selected by an include clause at the same level", () => {
-      // TODO
+    it("should merge `select` body into `include` body if it selects  the same level if they", () => {
+      // Top-level
+      expect(
+        mergeSelectOrIncludeClauses("user",
+          {
+            include: {
+              posts: true
+            }
+          },
+          {
+            select: {
+              posts: true,
+              likes: true,
+              comments: {
+                select: {
+                  content: true
+                }
+              }
+            }
+          }
+        )
+      ).toEqual({
+        include: {
+          likes: true,
+          comments: {
+            select: {
+              content: true
+            },
+          },
+          posts: true
+        }
+      });
     });
   });
 

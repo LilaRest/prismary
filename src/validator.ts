@@ -1,36 +1,18 @@
 import { PrismaClient } from "@prisma/client";
 import {
-  parentClauses, type ParentClause,
-  extendClauses, type ExtendClause,
   ignoredClauses, type IgnoredClause,
   notSupportedClauses, type NotSupportedClause, notSupportedClausesReasons,
   type MethodClause,
   supportsWhereClauses,
   SupportWhereClause,
-  parentClausesActions
 } from "./clauses";
-import { NotSupportedError, MissingError, ForbiddenError } from "./errors";
-import { type Action } from "./types";
+import { NotSupportedError } from "./errors";
 import { Ability } from "@casl/ability";
 import { accessibleBy } from "@casl/prisma";
 
-// To be retrieved for somewhere else
-const modelsSpecs = {
-  user: {
-    scalars: new Set(["id", "email", "name", "bases"]),
-    relations: new Set(["bases"]),
-    relationsModels: {
-      bases: "Base",
-    }
-  },
-  base: {
-    scalars: new Set(["user", "userId"]),
-    relations: new Set(["user"]),
-    relationsModels: {
-      user: "User",
-    }
-  }
-} as { [key: string]: any; };
+// Retrieve user ability instance 
+//@ts-ignore
+const ability: Ability = {};
 
 const eventsSelectOrIncludeStatements = {
   user: {
@@ -44,11 +26,6 @@ const eventsSelectOrIncludeStatements = {
     }
   }
 };
-
-//@ts-ignore
-const ability: Ability = {};
-
-
 
 /*
   create testing
