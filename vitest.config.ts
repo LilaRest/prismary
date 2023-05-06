@@ -2,8 +2,8 @@ import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
   test: {
-    // exclude: [
-    // "benchs/"
-    // ]
+    setupFiles: [
+      "tests/utils/index.ts"
+    ]
   },
 });

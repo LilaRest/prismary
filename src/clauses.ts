@@ -142,7 +142,7 @@ export const notSupportedClauses = new Set([
   "findUniqueOrThrow", "findFirstOrThrow", "aggregate", "groupBy",
 
   // Other
-  "rejectOnNotFound",
+  "rejectOnNotFound"
 
   // Raw database access
   // "queryRaw", "executeRaw", "findRaw", "runCommandRaw"
