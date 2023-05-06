@@ -1,7 +1,7 @@
 // To be generated from schema for somewhere else
 export const modelsSpecs = {
   user: {
-    scalars: new Set(["id", "email", "name", "bases"]),
+    fields: new Set(["id", "email", "name", "bases"]),
     relations: {
       bases: "base",
       friends: "user",
@@ -9,7 +9,7 @@ export const modelsSpecs = {
     }
   },
   base: {
-    scalars: new Set(["user", "userId"]),
+    fields: new Set(["user", "userId"]),
     relations: {
       user: "user",
     }

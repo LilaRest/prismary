@@ -20,7 +20,7 @@ const fileConfigSchema = z.object({
   zodCustomObject: z.object({}).optional()
 });
 
-type FileConfigSchema = z.infer<typeof fileConfigSchema>;
+export type FileConfigSchema = z.infer<typeof fileConfigSchema>;
 
 export function definePrismaryConfig (configs: FileConfigSchema) {
   return fileConfigSchema.parse(configs);
