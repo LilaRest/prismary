@@ -17,7 +17,7 @@ export function buildVariationName (modelName: string, variant: Variant) {
 
 export async function getTemplate (templateName: string) {
   try {
-    const filePath = resolve(join(__dirname, "templates"), templateName);
+    const filePath = resolve(join(__dirname, "../templates"), templateName);
     return await readFile(filePath, 'utf8');
   } catch (err) {
     throw new Error("The template doesn't exist.");

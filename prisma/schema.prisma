@@ -23,9 +23,9 @@ generator client {
   provider = "prisma-client-js"
 }
 
-// generator prismary {
-//   provider = "prismary"
-// }
+generator prismary {
+  provider = "prismary"
+}
 
 datasource db {
   provider = "postgresql"
