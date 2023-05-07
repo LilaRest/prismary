@@ -1,14 +1,10 @@
 import { SourceFile } from "ts-morph";
 
-export const formatConfig = {
-  // convertTabsToSpaces: true,
-  // insertSpaceAfterCommaDelimiter: true,
-  // insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces: true,
-  // newLineCharacter: "\n",
-  // tabSize: 2,
-};
-
 export function formatFile (file: SourceFile) {
-  file.organizeImports();
-  file.formatText(formatConfig);
+  // file.organizeImports();
+  // file.formatText();
+  /**
+   * Disabled for performances reasons.
+   * Consider using another code format like prettier which may be more efficient.
+   */
 }

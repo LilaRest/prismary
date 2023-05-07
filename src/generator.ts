@@ -3,7 +3,7 @@ import { version } from "../package.json";
 import { generatorHandler, type EnvValue } from "@prisma/generator-helper";
 import { parseEnvValue } from "@prisma/internals";
 import { promises as fs } from "fs";
-import { Project, SourceFile } from "ts-morph";
+import { Project, ProjectOptions, SourceFile } from "ts-morph";
 import { generate as generateSpecs } from "./generators/specs";
 import { generate as generateSchemas } from "./generators/schemas";
 import { generate as generateProcedures } from "./generators/procedures";
@@ -44,9 +44,11 @@ generatorHandler({
     ctx.indexFile = ctx.project.createSourceFile(`${ctx.outputDirPath}/index.ts`, {}, { overwrite: true });
 
     // Call generators
-    await generateSpecs(options, ctx as Context);
-    await generateSchemas(options, ctx as Context);
-    await generateProcedures(options, ctx as Context);
+    await Promise.all([
+      generateSpecs(options, ctx as Context),
+      generateSchemas(options, ctx as Context),
+      generateProcedures(options, ctx as Context),
+    ]);
 
     // Format generated index file
     formatFile(ctx.indexFile);

@@ -14,7 +14,7 @@ export async function generate (
 
   const models = options.dmmf.datamodel.models;
   let modelsSpecs = "{";
-  models.forEach((model) => {
+  models.forEach(async (model) => {
     const modelName = model.name.toLowerCase();
 
     const fields: string[] = [];
