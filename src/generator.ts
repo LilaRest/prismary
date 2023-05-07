@@ -2,7 +2,7 @@
 import { version } from "../package.json";
 import { generatorHandler, type EnvValue } from "@prisma/generator-helper";
 import { parseEnvValue } from "@prisma/internals";
-import { promises as fs } from "fs";
+import { promises as fs, unlink } from "fs";
 import { Project, SourceFile } from "ts-morph";
 import { generate as generateSpecs } from "./generators/specs";
 import { generate as generateSchemas } from "./generators/schemas";
@@ -58,6 +58,18 @@ generatorHandler({
     // Save ts-morph project
     ctx.project.saveSync();
 
+    // zzz
+    try {
+      await fs.unlink(path.join(ctx.outputDirPath, "index.d.ts"));
+    } catch (e) {}
+    try {
+      await fs.unlink(path.join(ctx.outputDirPath, "index.js"));
+    } catch (e) {}
+    try {
+      await fs.unlink(path.join(ctx.outputDirPath, "index.js.map"));
+    } catch (e) {}
+
+
     // Build swc transpiler options
     const swcOptions: Options = {
       jsc: {
@@ -78,6 +90,7 @@ generatorHandler({
 
     // Retrieve generated file paths
     const generatedFilesPaths = fg.sync([`${ctx.outputDirPath}/**/*`]);
+
 
     console.time("swc");
     generatedFilesPaths.forEach((filePath) => {

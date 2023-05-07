@@ -17,5 +17,5 @@
     "strict": true
   },
   "include": ["./src/**/*.ts"],
-  "exclude": ["**/*.template.ts", "./dist/**/*"]
+  "exclude": ["**/*.template.ts", "dist"]
 }

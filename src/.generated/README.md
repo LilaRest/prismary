@@ -11,3 +11,7 @@ _Example_: Accessing dynamically generated models specifications:
 ```ts
 import { modelsSpecs } from "../.generated";
 ```
+
+### Usage
+
+Run `pnpm build` and `npx prisma generate` to make generated contents available from sources

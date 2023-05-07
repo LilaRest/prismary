@@ -1,6 +1,14 @@
-// @ts-ignore
-export * from "../../dist/.generated";
+const _generated = require("../../dist/.generated");
 
-declare module "." {
-  export const modelsSpecs: { [key: string]: any; };
+type ModelsSpecs = {
+  [key: string]: {
+    fields: Set<string>,
+    relations: Record<string, string>;
+  };
+};
+
+interface Generated {
+  modelsSpecs: ModelsSpecs;
 }
+
+export const { modelsSpecs } = _generated as Generated;
