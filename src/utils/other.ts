@@ -1,9 +1,9 @@
 import type { SourceFile } from 'ts-morph';
 import { readFile } from 'fs/promises';
-import { join, resolve } from "path";
 import { type DMMF } from "@prisma/generator-helper";
 import { type Variant } from "../variants";
-import { performance } from 'perf_hooks';
+import fs from "fs";
+import path from "path";
 
 export function writeArray (sourceFile: SourceFile, array: string[], newLine = true) {
   sourceFile.addStatements((writer) => {
@@ -17,7 +17,7 @@ export function buildVariationName (modelName: string, variant: Variant) {
 
 export async function getTemplate (templateName: string) {
   try {
-    const filePath = resolve(join(__dirname, "../templates"), templateName);
+    const filePath = path.resolve(path.join(__dirname, "../templates"), templateName);
     return await readFile(filePath, 'utf8');
   } catch (err) {
     throw new Error("The template doesn't exist.");
@@ -66,3 +66,15 @@ export function getZodSchemaFromField (field: DMMF.Field, variant: Variant) {
 
 /* Extract a given set value as a union type */
 export type SetToUnion<T> = T extends Set<infer I> ? I : never;
+
+
+export function findProjectRoot () {
+  let currentPath = process.cwd();
+  while (currentPath !== '/') {
+    if (fs.existsSync(path.join(currentPath, 'package.json'))) {
+      return currentPath;
+    }
+    currentPath = path.dirname(currentPath);
+  }
+  throw new Error("Project root not found.");
+}

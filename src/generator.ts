@@ -8,6 +8,8 @@ import { generate as generateSpecs } from "./generators/specs";
 import { generate as generateSchemas } from "./generators/schemas";
 import { generate as generateProcedures } from "./generators/procedures";
 import { formatFile } from "./ts-morph-format";
+import path from "path";
+import { findProjectRoot } from "./utils/other";
 
 export type Context = {
   outputDirPath: string;
@@ -21,7 +23,7 @@ generatorHandler({
     version: version,
     prettyName: "Prismary",
     requiresGenerators: ["prisma-client-js"],
-    defaultOutput: "prismary"
+    defaultOutput: path.join(findProjectRoot(), 'node_modules', '@prismary', 'client')
   }),
   onGenerate: async (options) => {
     // Initialize context object
