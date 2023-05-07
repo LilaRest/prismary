@@ -1,3 +1,11 @@
+# [1.5.0](https://github.com/LilaRest/prismary/compare/v1.4.0...v1.5.0) (2023-05-06)
+
+
+### Features
+
+* add models specs generator + refactor each generator in its own file ([58e9863](https://github.com/LilaRest/prismary/commit/58e9863273ee8df342366002c886d93ddd23dc12))
+* entirely rewrite select/include clauses merging function + setup a minimal Prisma schema ([c5d42c2](https://github.com/LilaRest/prismary/commit/c5d42c2a92f5b6f140dd08927e6ac31893cfe331))
+
 # [1.4.0](https://github.com/LilaRest/prismary/compare/v1.3.0...v1.4.0) (2023-05-04)
 
 
