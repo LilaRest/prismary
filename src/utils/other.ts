@@ -66,15 +66,3 @@ export function getZodSchemaFromField (field: DMMF.Field, variant: Variant) {
 
 /* Extract a given set value as a union type */
 export type SetToUnion<T> = T extends Set<infer I> ? I : never;
-
-
-export function findProjectRoot () {
-  let currentPath = process.cwd();
-  while (currentPath !== '/') {
-    if (fs.existsSync(path.join(currentPath, 'package.json'))) {
-      return currentPath;
-    }
-    currentPath = path.dirname(currentPath);
-  }
-  throw new Error("Project root not found.");
-}

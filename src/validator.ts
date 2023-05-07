@@ -9,7 +9,7 @@ import {
 import { NotSupportedError } from "./errors";
 import { Ability } from "@casl/ability";
 import { accessibleBy } from "@casl/prisma";
-import { modelsSpecs } from "@prismary/client";
+// import { modelsSpecs } from "@prismary/client";
 
 // Retrieve user ability instance 
 //@ts-ignore
@@ -27,6 +27,7 @@ const eventsSelectOrIncludeStatements = {
     }
   }
 };
+const modelsSpecs: any = {};
 
 /*
   create testing

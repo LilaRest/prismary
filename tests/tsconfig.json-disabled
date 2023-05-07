@@ -8,7 +8,9 @@
     "moduleResolution": "node",
     "declaration": true,
     "rootDir": "../",
-    "strict": true
+    "strict": true,
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true
   },
   "include": ["../src/**/*.ts", "../tests/**/*.ts"],
   "exclude": ["**/*.template.ts"]

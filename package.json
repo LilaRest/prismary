@@ -16,7 +16,7 @@
     "prismary": "dist/generator.js"
   },
   "scripts": {
-    "build": "tsc && bash ./scripts/add-templates-to-dist.bash",
+    "build": "rm -rf ./dist/.generated/ && tsc && bash ./scripts/add-templates-to-dist.bash",
     "test": "vitest",
     "bench": "vitest bench --run",
     "coverage": "vitest run --coverage",
@@ -29,7 +29,9 @@
     "@prisma/client": "^4.13.0",
     "@prisma/generator-helper": "^4.13.0",
     "@prisma/internals": "^4.13.0",
+    "@swc/core": "^1.3.56",
     "@trpc/server": "^10.25.0",
+    "fast-glob": "^3.2.12",
     "ts-morph": "^18.0.0",
     "zod": "^3.21.4"
   },

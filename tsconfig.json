@@ -13,8 +13,9 @@
     "outDir": "./dist",
     "rootDir": "./src",
     "typeRoots": ["src/types.ts"],
+    "skipLibCheck": true,
     "strict": true
   },
   "include": ["./src/**/*.ts"],
-  "exclude": ["**/*.template.ts"]
+  "exclude": ["**/*.template.ts", "./dist/**/*"]
 }

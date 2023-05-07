@@ -52,11 +52,11 @@
  *   where x is a "sub body"
  */
 
-import { modelsSpecs } from "@prismary/client";
+import { modelsSpecs } from "../.generated";
 
 /**
  * Represents a {@link queryBody} object that only supports `include` and `select` clauses.
- * Is also used to represnent sub-body nested in `include` and `select clauses.
+ * Is also used to represent sub-body nested in `include` and `select clauses.
  */
 interface SelectQueryBody {
   select: SelectOrIncludeBody;

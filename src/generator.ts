@@ -3,13 +3,15 @@ import { version } from "../package.json";
 import { generatorHandler, type EnvValue } from "@prisma/generator-helper";
 import { parseEnvValue } from "@prisma/internals";
 import { promises as fs } from "fs";
-import { Project, ProjectOptions, SourceFile } from "ts-morph";
+import { Project, SourceFile } from "ts-morph";
 import { generate as generateSpecs } from "./generators/specs";
 import { generate as generateSchemas } from "./generators/schemas";
 import { generate as generateProcedures } from "./generators/procedures";
 import { formatFile } from "./utils/ts-morph-format";
 import path from "path";
-import { findProjectRoot } from "./utils/other";
+import { transformFileSync, Options } from '@swc/core';
+import fg from "fast-glob";
+import { fieldPatternMatcher } from "@casl/ability";
 
 export type Context = {
   outputDirPath: string;
@@ -23,7 +25,7 @@ generatorHandler({
     version: version,
     prettyName: "Prismary",
     requiresGenerators: ["prisma-client-js"],
-    defaultOutput: path.join(findProjectRoot(), 'node_modules', '@prismary', 'client')
+    defaultOutput: path.join(__dirname, ".generated")
   }),
   onGenerate: async (options) => {
     // Initialize context object
@@ -54,6 +56,47 @@ generatorHandler({
     formatFile(ctx.indexFile);
 
     // Save ts-morph project
-    return ctx.project.save();
+    ctx.project.saveSync();
+
+    // Build swc transpiler options
+    const swcOptions: Options = {
+      jsc: {
+        parser: {
+          syntax: 'typescript',
+          tsx: false,
+          decorators: true,
+          dynamicImport: true,
+        },
+        target: 'es2019',
+        loose: false,
+      },
+      module: {
+        type: 'commonjs',
+      },
+      sourceMaps: true,
+    };
+
+    // Retrieve generated file paths
+    const generatedFilesPaths = fg.sync([`${ctx.outputDirPath}/**/*`]);
+
+    console.time("swc");
+    generatedFilesPaths.forEach((filePath) => {
+      try {
+        const output = transformFileSync(filePath, swcOptions);
+        const outputPath = path.join(ctx.outputDirPath!, path.basename(filePath, '.ts') + '.js');
+
+        if (output.map) {
+          const mapPath = outputPath + '.map';
+          fs.writeFile(mapPath, JSON.stringify(output.map));
+        }
+
+        if (output.code) {
+          fs.writeFile(outputPath, output.code);
+        }
+      } catch (err) {
+        console.error(`Error compiling ${filePath}: `, err);
+      }
+    });
+    console.timeEnd("swc");
   },
-});
+});;
