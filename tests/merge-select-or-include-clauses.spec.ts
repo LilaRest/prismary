@@ -15,9 +15,8 @@ describe("mergeSelectOrIncludeClauses()", () => {
           },
           {
             select: {
-              firstName: true,
-              lastName: true,
-              email: true,
+              name: true,   // Redundant (already selected by `include`)
+              email: true,  // Redundant (already selected by `include`)
             }
           }
         )
@@ -40,8 +39,8 @@ describe("mergeSelectOrIncludeClauses()", () => {
             select: {
               posts: {
                 select: {
-                  title: true,        // Redundant, already selected by include
-                  description: true   // Redundant, already selected by include
+                  title: true,    // Redundant (already selected by `include`)
+                  content: true   // Redundant (already selected by `include`)
                 }
               }
             }
@@ -69,8 +68,8 @@ describe("mergeSelectOrIncludeClauses()", () => {
             include: {
               posts: {
                 select: {
-                  content: true,   // Redundant, already selected by include
-                  datetime: true   // Redundant, already selected by include
+                  message: true,    // Redundant (already selected by `include`)
+                  createdAt: true   // Redundant (already selected by `include`)
                 }
               }
             }
@@ -87,7 +86,7 @@ describe("mergeSelectOrIncludeClauses()", () => {
       });
     });
 
-    it("should merge `select` body into `include` body if it selects  the same level if they", () => {
+    it("should merge `select` body into `include` body at same level if it selects fields not selected by the `include` clause", () => {
       // Top-level
       expect(
         mergeSelectOrIncludeClauses("user",
@@ -98,11 +97,11 @@ describe("mergeSelectOrIncludeClauses()", () => {
           },
           {
             select: {
-              posts: true,
-              likes: true,
-              comments: {
+              posts: true,        // Redundant (already selected by `include`)
+              friends: true,      // Relation not selected by `include`
+              comments: {         // Relation not selected by `include`
                 select: {
-                  content: true
+                  message: true
                 }
               }
             }
@@ -110,13 +109,13 @@ describe("mergeSelectOrIncludeClauses()", () => {
         )
       ).toEqual({
         include: {
-          likes: true,
+          posts: true,
+          friends: true,
           comments: {
             select: {
-              content: true
+              message: true
             },
           },
-          posts: true
         }
       });
     });

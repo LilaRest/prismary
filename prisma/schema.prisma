@@ -35,6 +35,7 @@ datasource db {
 model User {
   id         Int       @id @default(autoincrement())
   email      String    @unique
+  name       String
   password   String
   profileId  Int?
   profile    Profile?
@@ -66,7 +67,7 @@ model Post {
 
 model Comment {
   id        Int     @id @default(autoincrement())
-  text      String
+  message      String
   createdAt DateTime @default(now())
   postId    Int
   authorId  Int

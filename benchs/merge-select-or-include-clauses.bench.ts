@@ -7,14 +7,15 @@ describe("mergeSelectOrIncludeClauses()", () => {
   /**
    * This benchmark represents a "common" or "normal" usage of the 
    * mergeSelectOrIncludeClauses() method. 
-   * p999 should be under 0.1ms
+   * p999 should be under 0.1ms (on my machine)
    */
   bench("normal usage", () => {
     mergeSelectOrIncludeClauses(
+      "user",
       {
         select: {
-          firstName: true,
-          lastName: true,
+          name: true,
+          email: true,
           posts: {
             select: {
               title: true,
@@ -45,44 +46,33 @@ describe("mergeSelectOrIncludeClauses()", () => {
    * mergeSelectOrIncludeClauses() method.
    * It is here to ensure that the method performs well even in such
    * extreme cases where gigantic clauses bodies are merged together.
-   * p999 should be under 0.2ms
+   * p999 should be under 0.3ms (on my machine)
    */;
   bench("unrealistic usage", () => {
     mergeSelectOrIncludeClauses(
+      "user",
       {
         include: {
           posts: true,
           comments: {
             select: {
               title: true,
-              description: true,
+              content: true,
               author: {
                 include: {
-                  user: {
-                    include: {
-                      posts: true,
-                      comments: {
-                        select: {
-                          title: true,
-                          description: true,
-                          author: {
-                            include: {
-                              user: {
-                                include: {
-                                  posts: true,
-                                  comments: {
-                                    select: {
-                                      title: true,
-                                      description: true,
-                                      author: {
-                                        include: {
-                                          user: true
-                                        }
-                                      }
-                                    }
-                                  }
-                                }
-                              }
+                  posts: true,
+                  comments: {
+                    select: {
+                      message: true,
+                      createAt: true,
+                      author: {
+                        include: {
+                          posts: true,
+                          comments: {
+                            select: {
+                              message: true,
+                              createdAt: true,
+                              author: true
                             }
                           }
                         }
@@ -93,31 +83,46 @@ describe("mergeSelectOrIncludeClauses()", () => {
               }
             }
           },
-          shares: {
-            select: {
-              title: true,
-              description: true,
-              author: {
-                include: {
-                  user: {
-                    include: {
-                      posts: true,
-                      comments: {
-                        select: {
-                          title: true,
-                          description: true,
-                          author: {
-                            include: {
-                              user: {
+          friends: {
+            include: {
+              profile: {
+                select: {
+                  bio: true,
+                  age: true,
+                }
+              },
+              posts: true,
+              comments: true,
+              friends: {
+                select: {
+                  name: true,
+                  profile: {
+                    select: {
+                      bio: true,
+                      user: {
+                        include: {
+                          posts: true,
+                          comments: {
+                            select: {
+                              title: true,
+                              content: true,
+                              author: {
                                 include: {
                                   posts: true,
                                   comments: {
                                     select: {
-                                      title: true,
-                                      description: true,
+                                      message: true,
+                                      createAt: true,
                                       author: {
                                         include: {
-                                          user: true
+                                          posts: true,
+                                          comments: {
+                                            select: {
+                                              message: true,
+                                              createdAt: true,
+                                              author: true
+                                            }
+                                          }
                                         }
                                       }
                                     }
@@ -125,42 +130,23 @@ describe("mergeSelectOrIncludeClauses()", () => {
                                 }
                               }
                             }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          related: {
-            select: {
-              title: true,
-              description: true,
-              author: {
-                include: {
-                  user: {
-                    include: {
-                      posts: true,
-                      comments: {
-                        select: {
-                          title: true,
-                          description: true,
-                          author: {
+                          },
+                          friends: {
                             include: {
-                              user: {
-                                include: {
-                                  posts: true,
-                                  comments: {
+                              profile: {
+                                select: {
+                                  bio: true,
+                                  age: true,
+                                }
+                              },
+                              posts: true,
+                              comments: true,
+                              friends: {
+                                select: {
+                                  name: true,
+                                  profile: {
                                     select: {
-                                      title: true,
-                                      description: true,
-                                      author: {
-                                        include: {
-                                          user: true
-                                        }
-                                      }
+                                      bio: true
                                     }
                                   }
                                 }
@@ -175,41 +161,58 @@ describe("mergeSelectOrIncludeClauses()", () => {
               }
             }
           }
-        }
+        },
       },
       {
         select: {
-          firstName: true,
-          lastName: true,
-          email: true,
-          posts: {
+          profile: {
             select: {
-              title: true,
-              content: true,
-              comments: {
+              bio: true,
+              isPrivate: true
+            }
+          },
+          comments: {
+            select: {
+              createdAt: true,
+              author: {
                 include: {
-                  author: true,
-                  likes: {
-                    select: {
-                      author: {
+                  friends: {
+                    include: {
+                      profile: {
                         select: {
-                          firstName: true,
-                          lastName: true,
-                          email: true,
-                          posts: {
+                          bio: true,
+                          age: true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          friends: {
+            select: {
+              id: true,
+              email: true,
+              name: true,
+              profileId: true,
+              profile: {
+                select: {
+                  bio: true,
+                  isPrivate: true
+                }
+              },
+              comments: {
+                select: {
+                  createdAt: true,
+                  author: {
+                    include: {
+                      friends: {
+                        include: {
+                          profile: {
                             select: {
-                              title: true,
-                              content: true,
-                              comments: {
-                                include: {
-                                  author: true,
-                                  likes: {
-                                    select: {
-                                      author: true
-                                    }
-                                  }
-                                }
-                              }
+                              bio: true,
+                              age: true
                             }
                           }
                         }
@@ -218,67 +221,12 @@ describe("mergeSelectOrIncludeClauses()", () => {
                   }
                 }
               },
-              details: {
-                include: {
-                  comments: {
-                    include: {
-                      author: true,
-                      likes: {
-                        select: {
-                          author: {
-                            select: {
-                              firstName: true,
-                              lastName: true,
-                              email: true,
-                              posts: {
-                                select: {
-                                  title: true,
-                                  content: true,
-                                  comments: {
-                                    include: {
-                                      author: true,
-                                      likes: {
-                                        select: {
-                                          author: true
-                                        }
-                                      }
-                                    }
-                                  }
-                                }
-                              }
-                            }
-                          }
-                        }
-                      },
-                      reports: {
-                        select: {
-                          author: {
-                            select: {
-                              firstName: true,
-                              lastName: true,
-                              email: true,
-                              posts: {
-                                select: {
-                                  title: true,
-                                  content: true,
-                                  comments: {
-                                    include: {
-                                      author: true,
-                                      likes: {
-                                        select: {
-                                          author: true
-                                        }
-                                      }
-                                    }
-                                  }
-                                }
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
+              friends: {
+                select: {
+                  id: true,
+                  email: true,
+                  name: true,
+                  profileId: true
                 }
               }
             }
