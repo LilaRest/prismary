@@ -24,7 +24,7 @@ export async function generate (
       const variationName = buildVariationName(model.name, variant);
 
       // Add export line to index file for this variation
-      ctx.indexFile.addExportDeclaration({ moduleSpecifier: `./${variationName}.ts` });
+      ctx.indexFile.addExportDeclaration({ moduleSpecifier: `./${variationName}` });
 
       // Create the variation file
       const variationFile = ctx.project.createSourceFile(`${ctx.outputDirPath}/${variationName}.ts`, {}, { overwrite: true });

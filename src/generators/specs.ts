@@ -47,5 +47,5 @@ export async function generate (
   formatFile(modelsSpecsFile);
 
   // Export model-specs.ts file from index
-  ctx.indexFile.addExportDeclaration({ moduleSpecifier: `./models-specs.ts` });
+  ctx.indexFile.addExportDeclaration({ moduleSpecifier: `./models-specs` });
 };
