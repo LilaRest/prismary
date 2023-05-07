@@ -1,7 +1,6 @@
 
 
 export function toEqualSet<T> (received: Set<T>, expected: Set<T>) {
-  const { isNot } = this;
 
   const missingValues: T[] = [];
   const unwantedValues: T[] = [];
