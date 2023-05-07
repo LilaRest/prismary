@@ -1,3 +1,21 @@
+# [1.6.0](https://github.com/LilaRest/prismary/compare/v1.5.0...v1.6.0) (2023-05-07)
+
+
+### Bug Fixes
+
+* fix unwanted .ts extension on client index file exports ([6967285](https://github.com/LilaRest/prismary/commit/696728520ea1ee09b4d5a764214284f577ac53af))
+
+
+### Features
+
+* a ton of updates about generated contents (zwc compiling, fake .generated folder, ...) ([113bfc8](https://github.com/LilaRest/prismary/commit/113bfc8952cde778eea3138f1ade3784be220ceb))
+* generate client under node_modules/@prisma/client by default + update deps ([41b606a](https://github.com/LilaRest/prismary/commit/41b606ad39f598fdee4e99f3f457efa6b78dcb05))
+
+
+### Performance Improvements
+
+* improve client generation by 10x (2s to 200ms) ([62bc318](https://github.com/LilaRest/prismary/commit/62bc3181f1c258ede7e8e883830895ee626818a6))
+
 # [1.5.0](https://github.com/LilaRest/prismary/compare/v1.4.0...v1.5.0) (2023-05-06)
 
 
