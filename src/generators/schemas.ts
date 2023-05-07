@@ -4,7 +4,7 @@ import { Context } from "../generator";
 import { buildVariationName, getTemplate, getZodSchemaFromField, writeArray } from "../utils/other";
 import { Variants } from "../variants";
 import { VariableDeclarationKind } from "ts-morph";
-import { formatFile } from "../ts-morph-format";
+import { formatFile } from "../utils/ts-morph-format";
 
 export async function generate (
   options: GeneratorOptions,

@@ -52,7 +52,7 @@
  *   where x is a "sub body"
  */
 
-import { modelsSpecs } from "../toGenerate";
+import { modelsSpecs } from "@prismary/client";
 
 /**
  * Represents a {@link queryBody} object that only supports `include` and `select` clauses.

@@ -2,7 +2,7 @@
 import { GeneratorOptions } from "@prisma/generator-helper";
 import { Context } from "../generator";
 import { getTemplate, writeArray } from "../utils/other";
-import { formatFile } from "../ts-morph-format";
+import { formatFile } from "../utils/ts-morph-format";
 
 export async function generate (
   options: GeneratorOptions,

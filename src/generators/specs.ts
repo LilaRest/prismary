@@ -1,7 +1,7 @@
 
 import { GeneratorOptions } from "@prisma/generator-helper";
 import { Context } from "../generator";
-import { formatFile } from "../ts-morph-format";
+import { formatFile } from "../utils/ts-morph-format";
 import { VariableDeclarationKind } from "ts-morph";
 
 

@@ -7,7 +7,7 @@ import { Project, ProjectOptions, SourceFile } from "ts-morph";
 import { generate as generateSpecs } from "./generators/specs";
 import { generate as generateSchemas } from "./generators/schemas";
 import { generate as generateProcedures } from "./generators/procedures";
-import { formatFile } from "./ts-morph-format";
+import { formatFile } from "./utils/ts-morph-format";
 import path from "path";
 import { findProjectRoot } from "./utils/other";
 
