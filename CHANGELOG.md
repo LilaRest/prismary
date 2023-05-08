@@ -1,3 +1,10 @@
+## [1.6.1](https://github.com/LilaRest/prismary/compare/v1.6.0...v1.6.1) (2023-05-07)
+
+
+### Bug Fixes
+
+* generated placeholder files not properly deleted + fake index.ts raising TS overwrite error ([4834886](https://github.com/LilaRest/prismary/commit/48348863440fdc1dc9825b33f4626b437e4a2d9f))
+
 # [1.6.0](https://github.com/LilaRest/prismary/compare/v1.5.0...v1.6.0) (2023-05-07)
 
 
