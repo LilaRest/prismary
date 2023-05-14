@@ -2,20 +2,21 @@
 import { version } from "../package.json";
 import { generatorHandler, type EnvValue } from "@prisma/generator-helper";
 import { parseEnvValue } from "@prisma/internals";
-import { promises as fs, unlink } from "fs";
+import { promises as fs } from "fs";
 import { Project, SourceFile } from "ts-morph";
 import { generate as generateSpecs } from "./generators/specs";
 import { generate as generateSchemas } from "./generators/schemas";
 import { generate as generateProcedures } from "./generators/procedures";
+
 import { formatFile } from "./utils/ts-morph-format";
 import path from "path";
 import { transformFileSync, Options } from '@swc/core';
 import fg from "fast-glob";
-import { fieldPatternMatcher } from "@casl/ability";
+import { FileConfigSchema, getConfig } from "./config";
 
 export type Context = {
   outputDirPath: string;
-  // config: FileConfigSchema;
+  config: FileConfigSchema;
   indexFile: SourceFile;
   project: Project;
 };
@@ -32,8 +33,7 @@ generatorHandler({
     let ctx: Partial<Context> = {};
 
     // Retrive & validate configurations
-    // context.config = await getPrismaryConfig(options.generator.config.configFilePath);
-    // if (!context.config) throw new Error("Prismary cannot retrieve your configuration object.");
+    // TODO: Use configs in schema.prisma instead to manipulate generators behaviors
 
     // Retrieve output directory path and create it recursively if missing
     ctx.outputDirPath = parseEnvValue(options.generator.output as EnvValue);
@@ -69,7 +69,6 @@ generatorHandler({
       await fs.unlink(path.join(ctx.outputDirPath, "index.js.map"));
     } catch (e) {}
 
-
     // Build swc transpiler options
     const swcOptions: Options = {
       jsc: {
@@ -91,8 +90,7 @@ generatorHandler({
     // Retrieve generated file paths
     const generatedFilesPaths = fg.sync([`${ctx.outputDirPath}/**/*`]);
 
-
-    console.time("swc");
+    // Transpile in JS each generated file
     generatedFilesPaths.forEach((filePath) => {
       try {
         const output = transformFileSync(filePath, swcOptions);
@@ -110,6 +108,5 @@ generatorHandler({
         console.error(`Error compiling ${filePath}: `, err);
       }
     });
-    console.timeEnd("swc");
   },
 });;

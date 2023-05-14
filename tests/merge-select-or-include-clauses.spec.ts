@@ -34,11 +34,14 @@
 
 import { describe, expect, it } from 'vitest';
 import { QueryBody, mergeSelectOrIncludeClauses } from "../src/utils/merge-select-or-include-clauses";
+import "../prisma/prismary.config";
+import { getConfig } from "prismary";
 
 type Args = [string, QueryBody, QueryBody];
 const reverseQueryBodies = (args: Args): Args => [args[0], args[2], args[1]];
 
 describe("mergeSelectOrIncludeClauses()", () => {
+  console.error(Object.keys(getConfig()!));
 
   describe("returned clause type", () => {
     it("should return an `include` clause when merging a `select` and an `include` clause together",
