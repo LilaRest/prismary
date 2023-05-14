@@ -1,3 +1,10 @@
+# [1.7.0](https://github.com/LilaRest/prismary/compare/v1.6.1...v1.7.0) (2023-05-14)
+
+
+### Features
+
+* add support for configuration file ([6e4a993](https://github.com/LilaRest/prismary/commit/6e4a99303cc2d8fff64aaa5dca49d018f0c3cf98))
+
 ## [1.6.1](https://github.com/LilaRest/prismary/compare/v1.6.0...v1.6.1) (2023-05-07)
 
 
