@@ -39,6 +39,7 @@
   "devDependencies": {
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
+    "@semantic-release/release-notes-generator": "^11.0.1",
     "@types/node": "^20.1.0",
     "@vitest/coverage-c8": "^0.31.0",
     "cz-conventional-changelog": "^3.3.0",
