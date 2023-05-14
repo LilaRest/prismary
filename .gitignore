@@ -6,3 +6,8 @@ node_modules
 dist
 .DS_Store
 lib
+
+// Exclude all distribution files except generator outputs
+dist/*
+!dist/
+!dist/.generated
