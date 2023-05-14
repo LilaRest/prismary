@@ -1,0 +1,20 @@
+{
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "files.exclude": {
+    "renovate.json": true,
+    "tsconfig.json": true,
+    "pnpm-lock.yaml": true,
+    "CHANGELOG.md": true,
+    ".releaserc.json": true,
+    ".github": true,
+    "node_modules": true,
+    "package.json": true,
+    ".gitignore": true,
+    "README.md": true,
+    "LICENSE": true,
+    "vitest.config.ts": true,
+    "coverage": true,
+    "dist": true,
+    "scripts": true
+  }
+}
