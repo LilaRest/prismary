@@ -100,7 +100,7 @@ type ReadQueryBody = Partial<{
 
 
 
-class ValidatedQuery {
+export class ValidatedQuery {
   model: string;
   method: MethodClause;
   body: QueryBody;
