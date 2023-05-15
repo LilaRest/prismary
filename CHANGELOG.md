@@ -1,3 +1,16 @@
+## [1.8.0](https://github.com/LilaRest/prismary/compare/v1.7.1...v1.8.0) (2023-05-15)
+
+
+### Features
+
+* **client:** create minimal client prototype ([2295036](https://github.com/LilaRest/prismary/commit/22950360747700425efc276526f4e3b9d6b71fbd))
+* **query:** write a mockup of the Query class based on previous works made in validator.ts ([e120825](https://github.com/LilaRest/prismary/commit/e120825dac30a5773c46537a1e45ebdf11980468))
+
+
+### Others
+
+* move client, model and query classes into their own files ([4ed5f57](https://github.com/LilaRest/prismary/commit/4ed5f57a0882a0d632158cde0e118bb9036d1ea0))
+
 ## [1.7.1](https://github.com/LilaRest/prismary/compare/v1.7.0...v1.7.1) (2023-05-14)
 
 
