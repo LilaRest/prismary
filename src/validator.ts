@@ -9,50 +9,10 @@ import {
 import { NotSupportedError } from "./errors";
 import { accessibleBy } from "@casl/prisma";
 import { modelsSpecs } from "./.generated";
-import { getConfig } from "./config";
 import { Stack } from "./utils/stack";
 
 // Retrieve config and required instances
-const config = getConfig();
-if (!config) throw "Prismary: Config object not found.";
-const prisma = config.prismaClientInstance as PrismaClient & {
-  [key: string]: any;
-};
-if (!prisma) throw "Prisma Client instance not found";
-const ability = config.caslAbilityInstance;
-
-
-/*
-  create testing
-    1) test if the given data is allowed to be created with can(permissions, subject(model, data))
-    2) if permitted create, else error
-
-  read testing:
-    1) read selected rows with read method
-    2) get permitted fields with permittedFieldsOf()
-    3) if all read fields are permitted -> return data, else error
-
-  update testing:
-    1) read selected rows with findMany
-    2) get permitted fields with permittedFieldsOf()
-    3) if all updated fields are permitted -> update, else error
-  
-  delete testing:
-    same than for update
-
-*/
-
-
-/**
- * TODO implement:
- * - Create operations should be tested on provided data and not on DB read
- * - `connectOrCreate` should require "update" for parent data key
- * - Ignored fields should maybe not be ignored to support column comparison
- *   (see: https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#compare-columns-in-the-same-table)
- * - Support "read" check for column comparisons (see: https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#compare-columns-in-the-same-table)
- */
-
-
+// const ability = config.caslAbilityInstance;
 
 
 
