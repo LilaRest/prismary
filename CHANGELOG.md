@@ -1,3 +1,15 @@
+## [1.7.1](https://github.com/LilaRest/prismary/compare/v1.7.0...v1.7.1) (2023-05-14)
+
+
+### Others
+
+* **semantic-release:** install missing "conventional-changelog-conventionalcommits" package ([f16e2df](https://github.com/LilaRest/prismary/commit/f16e2df0d8e4a894156652ba67815aadcb758cea))
+
+
+### Fixes
+
+* fake fix ([f2e0e48](https://github.com/LilaRest/prismary/commit/f2e0e4837448dad703f3f4d915495d7ee3511403))
+
 # [1.7.0](https://github.com/LilaRest/prismary/compare/v1.6.1...v1.7.0) (2023-05-14)
 
 
