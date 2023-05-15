@@ -7,27 +7,20 @@ import {
   SupportWhereClause,
 } from "./clauses";
 import { NotSupportedError } from "./errors";
-import { Ability } from "@casl/ability";
 import { accessibleBy } from "@casl/prisma";
-// import { modelsSpecs } from "@prismary/client";
+import { modelsSpecs } from "./.generated";
+import { getConfig } from "./config";
+import { Stack } from "./utils/stack";
 
-// Retrieve user ability instance 
-//@ts-ignore
-const ability: Ability = {};
-
-const eventsSelectOrIncludeStatements = {
-  user: {
-    type: "include",
-    include: {
-      bases: {
-        select: {
-          id: true
-        }
-      }
-    }
-  }
+// Retrieve config and required instances
+const config = getConfig();
+if (!config) throw "Prismary: Config object not found.";
+const prisma = config.prismaClientInstance as PrismaClient & {
+  [key: string]: any;
 };
-const modelsSpecs: any = {};
+if (!prisma) throw "Prisma Client instance not found";
+const ability = config.caslAbilityInstance;
+
 
 /*
   create testing
@@ -60,29 +53,7 @@ const modelsSpecs: any = {};
  */
 
 
-class Stack {
-  _array: Array<any>;
-  _index: number;
 
-  constructor () {
-    this._array = [];
-    this._index = 0;
-  }
-
-  get () {
-    return this._array[this._index];
-  }
-
-  pop () {
-    this._array.pop();
-    this._index--;
-  }
-
-  push (model: any) {
-    this._array.push(model);
-    this._index++;
-  }
-}
 
 
 type QueryBody = { [key: string]: any; };
@@ -104,7 +75,7 @@ export class ValidatedQuery {
   model: string;
   method: MethodClause;
   body: QueryBody;
-  stacks: Record<string, Stack>;
+  stacks: Record<string, Stack<any>>;
   readBody: ReadQueryBody;
   readData: Array<any>;
   requirements: object;
@@ -286,24 +257,3 @@ export class ValidatedQuery {
   //   return true;
   // }
 }
-
-
-
-
-
-
-
-const prisma = new PrismaClient(); // Should be replaced by user instance
-// const validatedQuery = new ValidatedQuery("User", "findMany", {
-//   where: {
-//     email: {
-//       equals: "john@doe.com"
-//     }
-//   }
-// });
-
-// validatedQuery.send()
-//   .then(res => console.log(res));
-
-
-prisma.user.findMany();
