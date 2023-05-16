@@ -166,12 +166,6 @@ export class ValidatedQuery {
     }
   }
 
-  async queryData (tx: Partial<PrismaClient>) {
-    // Fetch required data from DB using the previously build readBody
-    //@ts-ignore
-    this.readData = await tx[this.model].findMany(this.readBody);
-  }
-
 
   async validate () {
 

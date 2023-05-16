@@ -38,23 +38,32 @@ export class PrismaryQuery {
     // Await preparation process
     const { readQueryBody, permissionsMap } = await this.preparation;
 
-    // Call every before event
-    events[this.model].before.forEach((event: Function) => event(this.model, this.method, this.body));
+    // Call every before() event
+    // TODO: Call before() events
 
     // Starts prisma transaction
     prisma.$transaction(async (tx) => {
       // Retrieve data from database if readBody is non-empty
       // (which means that some are required by else events, authorization or query)
       let readData: Array<any> = [];
-      if (Object.keys(readBody).length) {
-        readData = await tx[this.model].findMany(readBody);
+      if (Object.keys(readQueryBody).length) {
+        readData = await tx[this.model].findMany(readQueryBody);
         if (!readData.length) return readData;  // Abort if no data found
       }
+
+      // Call every beforeInTx() event
+      // TODO: Call beforeInTx() events
 
       // Await authorization process
       const aResult = await this.authorize(readData, permissionsMap);
       if (aResult !== true) throw aResult;
+
+      // Call every afterInTx() event
+      // TODO: Call afterInTx() events
     });
+
+    // Call every after() event
+    // TODO: Call after() events
     return {};
   }
 
