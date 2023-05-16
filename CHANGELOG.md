@@ -1,3 +1,15 @@
+## [1.10.0](https://github.com/LilaRest/prismary/compare/v1.9.0...v1.10.0) (2023-05-16)
+
+
+### Features
+
+* **modelsspecs:** add argsTypes to modelsSpecs, which are used for user-side typesafety ([0b85ea4](https://github.com/LilaRest/prismary/commit/0b85ea4e4bac7055e5c60fb3ed430d6d676b4676))
+
+
+### Others
+
+* **demo:** move demonstration schemas and all the demo stuff inside demo/ to make things clear ([d245855](https://github.com/LilaRest/prismary/commit/d2458558b14d9700c49d1f2d39803151662e15cf))
+
 ## [1.9.0](https://github.com/LilaRest/prismary/compare/v1.8.0...v1.9.0) (2023-05-16)
 
 
