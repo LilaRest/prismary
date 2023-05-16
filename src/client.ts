@@ -1,8 +1,9 @@
 import { modelsSpecs } from "./.generated";
 import { PrismaryModel } from "./model";
+import { Model } from "./types";
 
 export class PrismaryClient {
-  [key: keyof typeof modelsSpecs]: PrismaryModel;
+  [key: Model]: PrismaryModel;
 
   constructor () {
     Object.keys(modelsSpecs).forEach(model => {

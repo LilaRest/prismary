@@ -1,5 +1,5 @@
 import { modelsSpecs } from "./.generated";
-import { Action } from "./types";
+import { Action, Model } from "./types";
 
 type Context = {
   model: string;
@@ -22,7 +22,7 @@ export type EventHandler = {
 };
 
 type Events = {
-  [key: keyof typeof modelsSpecs]: Record<Action, Array<EventHandler>>;
+  [key: Model]: Record<Action, Array<EventHandler>>;
 };
 
 export const events: Events = {};

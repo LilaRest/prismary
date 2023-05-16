@@ -4,6 +4,7 @@ import { getConfig } from "./config";
 import { PrismaClient } from "@prisma/client";
 import { ZodError } from "zod";
 import { events } from "./events";
+import { Action, Model } from "./types";
 
 
 // Retrieve config and required instances
@@ -39,7 +40,23 @@ export class PrismaryQuery {
     const { readQueryBody, permissionsMap } = await this.preparation;
 
     // Call every before() event
-    // TODO: Call before() events
+    const ctx = {
+      model: this.model,
+      method: this.method,
+      body: this.body,
+    };
+    for (const [model, actions] of Object.entries(permissionsMap)) {
+      for (const action of actions) {
+        for (const handler of events[model][action]) {
+          if (handler.before) {
+            handler.before(
+              ctx,
+              () => { throw "Aborted by before() event."; }
+            );
+          }
+        }
+      }
+    }
 
     // Starts prisma transaction
     prisma.$transaction(async (tx) => {
@@ -52,18 +69,56 @@ export class PrismaryQuery {
       }
 
       // Call every beforeInTx() event
-      // TODO: Call beforeInTx() events
+      for (const [model, actions] of Object.entries(permissionsMap)) {
+        for (const action of actions) {
+          for (const handler of events[model][action]) {
+            if (handler.beforeInTx) {
+              handler.beforeInTx(
+                ctx,
+                tx,
+                () => { throw "Aborted by beforeInTx() event."; }
+              );
+            }
+          }
+        }
+      }
 
       // Await authorization process
       const aResult = await this.authorize(readData, permissionsMap);
       if (aResult !== true) throw aResult;
 
       // Call every afterInTx() event
-      // TODO: Call afterInTx() events
+      for (const [model, actions] of Object.entries(permissionsMap)) {
+        for (const action of actions) {
+          for (const handler of events[model][action]) {
+            if (handler.afterInTx) {
+              handler.afterInTx(
+                ctx,
+                tx,
+                () => { throw "Aborted by afterInTx() event."; }
+              );
+            }
+          }
+        }
+      }
     });
 
     // Call every after() event
-    // TODO: Call after() events
+    for (const [model, actions] of Object.entries(permissionsMap)) {
+      for (const action of actions) {
+        for (const handler of events[model][action]) {
+          if (handler.after) {
+            handler.after(
+              ctx,
+              () => { throw "Aborted by after() event."; }
+            );
+          }
+        }
+      }
+    }
+
+    // Filter and return query requested data
+    // TODO: Filter query requested data
     return {};
   }
 
@@ -99,7 +154,7 @@ export class PrismaryQuery {
     return validations;
   }
 
-  async prepare (): Promise<{ readQueryBody: object; permissionsMap: object; }> {
+  async prepare (): Promise<{ readQueryBody: object; permissionsMap: Record<Model, Array<Action>>; }> {
     const readQueryBody = {};
     const permissionsMap = {};
     const bodies = [this.body, ...events[this.model].after.bodies, casl.queryBodies];
