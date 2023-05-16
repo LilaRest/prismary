@@ -1,3 +1,22 @@
+## [1.9.0](https://github.com/LilaRest/prismary/compare/v1.8.0...v1.9.0) (2023-05-16)
+
+
+### Features
+
+* **events:** create a mockup of the events API ([7e37d7c](https://github.com/LilaRest/prismary/commit/7e37d7caa61cdfc58a436e0b3c9374ebec40a0f7))
+* **modelsspecs:** append a `schema` key to models specifications, which hold their Zod schema ([b2249a6](https://github.com/LilaRest/prismary/commit/b2249a6266433f4a50c38684a078d68a3e697f19))
+* **query:** implement event handler calls into Query class ([d4fcf33](https://github.com/LilaRest/prismary/commit/d4fcf33fe65d2665c30f0ba63704a49348aadf9c))
+
+
+### Others
+
+* merge the Event manager class into Model class ([7b3bab5](https://github.com/LilaRest/prismary/commit/7b3bab58d97afe6b2766f0bb4c7fcaa39575ea17))
+
+
+### Fixes
+
+* **model:** fix missing _model property in Model class ([a8f269b](https://github.com/LilaRest/prismary/commit/a8f269b6e928a8f0ad1e1d92e825308007b49835))
+
 ## [1.8.0](https://github.com/LilaRest/prismary/compare/v1.7.1...v1.8.0) (2023-05-15)
 
 
