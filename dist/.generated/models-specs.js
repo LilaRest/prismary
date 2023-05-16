@@ -33,7 +33,24 @@ const modelsSpecs = {
             "posts": "post",
             "comments": "comment"
         },
-        schema: _UserSchema.UserSchema
+        schema: _UserSchema.UserSchema,
+        argsTypes: {
+            findUnique: {},
+            findUniqueOrThrow: {},
+            findFirst: {},
+            findFirstOrThrow: {},
+            findMany: {},
+            create: {},
+            update: {},
+            upsert: {},
+            delete: {},
+            createMany: {},
+            updateMany: {},
+            deleteMany: {},
+            count: {},
+            aggregate: {},
+            groupBy: {}
+        }
     },
     profile: {
         fields: new Set([
@@ -47,7 +64,24 @@ const modelsSpecs = {
         relations: {
             "user": "user"
         },
-        schema: _ProfileSchema.ProfileSchema
+        schema: _ProfileSchema.ProfileSchema,
+        argsTypes: {
+            findUnique: {},
+            findUniqueOrThrow: {},
+            findFirst: {},
+            findFirstOrThrow: {},
+            findMany: {},
+            create: {},
+            update: {},
+            upsert: {},
+            delete: {},
+            createMany: {},
+            updateMany: {},
+            deleteMany: {},
+            count: {},
+            aggregate: {},
+            groupBy: {}
+        }
     },
     post: {
         fields: new Set([
@@ -64,7 +98,24 @@ const modelsSpecs = {
             "author": "user",
             "comments": "comment"
         },
-        schema: _PostSchema.PostSchema
+        schema: _PostSchema.PostSchema,
+        argsTypes: {
+            findUnique: {},
+            findUniqueOrThrow: {},
+            findFirst: {},
+            findFirstOrThrow: {},
+            findMany: {},
+            create: {},
+            update: {},
+            upsert: {},
+            delete: {},
+            createMany: {},
+            updateMany: {},
+            deleteMany: {},
+            count: {},
+            aggregate: {},
+            groupBy: {}
+        }
     },
     comment: {
         fields: new Set([
@@ -80,6 +131,23 @@ const modelsSpecs = {
             "post": "post",
             "author": "user"
         },
-        schema: _CommentSchema.CommentSchema
+        schema: _CommentSchema.CommentSchema,
+        argsTypes: {
+            findUnique: {},
+            findUniqueOrThrow: {},
+            findFirst: {},
+            findFirstOrThrow: {},
+            findMany: {},
+            create: {},
+            update: {},
+            upsert: {},
+            delete: {},
+            createMany: {},
+            updateMany: {},
+            deleteMany: {},
+            count: {},
+            aggregate: {},
+            groupBy: {}
+        }
     }
 };

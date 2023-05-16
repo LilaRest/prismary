@@ -1,4 +1,6 @@
-import { ZodObject, ZodSchema } from "zod";
+import { ZodObject } from "zod";
+import { MethodClause, ParentClause } from "../clauses";
+import { Prisma } from "@prisma/client";
 
 const _generated = require("../../dist/.generated");
 
@@ -7,6 +9,7 @@ type ModelsSpecs = {
     fields: Set<string>,
     relations: Record<string, string>;
     schema: ZodObject<any>;
+    argsTypes: Record<MethodClause, Record<ParentClause, object>>;
   };
 };
 

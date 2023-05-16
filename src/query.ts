@@ -1,10 +1,12 @@
 import { modelsSpecs } from "./.generated";
-import { MethodClause } from "./clauses";
+import { MethodClause, methodClauses } from "./clauses";
 import { getConfig } from "./config";
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Prisma } from "@prisma/client";
 import { ZodError } from "zod";
 import { events } from "./events";
 import { Action, Model } from "./types";
+import { mergeSelectOrIncludeClauses } from "./utils/merge-select-or-include-clauses";
+import { PrismaQuery } from "@casl/prisma";
 
 
 // Retrieve config and required instances
@@ -16,11 +18,11 @@ if (!prisma) throw "Prismary: Prisma Client instance not found";
 export class PrismaryQuery {
   model: string;
   method: MethodClause;
-  body: object;
+  body: typeof modelsSpecs[Model]["argsTypes"][MethodClause];
   preparation: ReturnType<typeof this.prepare>;
   validation: ReturnType<typeof this.validate>;
 
-  constructor (model: string, method: MethodClause, body: object) {
+  constructor (model: string, method: MethodClause, body: typeof modelsSpecs[Model]["argsTypes"][MethodClause]) {
     this.model = model;
     this.method = method;
     this.body = body;
@@ -37,7 +39,7 @@ export class PrismaryQuery {
     }
 
     // Await preparation process
-    const { readQueryBody, permissionsMap } = await this.preparation;
+    const { readQueryBody, eventsMap, permissionsMap } = await this.preparation;
 
     // Call every before() event
     const ctx = {
@@ -45,7 +47,7 @@ export class PrismaryQuery {
       method: this.method,
       body: this.body,
     };
-    for (const [model, actions] of Object.entries(permissionsMap)) {
+    for (const [model, actions] of Object.entries(eventsMap)) {
       for (const action of actions) {
         for (const handler of events[model][action]) {
           if (handler.before) {
@@ -69,7 +71,7 @@ export class PrismaryQuery {
       }
 
       // Call every beforeInTx() event
-      for (const [model, actions] of Object.entries(permissionsMap)) {
+      for (const [model, actions] of Object.entries(eventsMap)) {
         for (const action of actions) {
           for (const handler of events[model][action]) {
             if (handler.beforeInTx) {
@@ -88,7 +90,7 @@ export class PrismaryQuery {
       // if (aResult !== true) throw aResult;
 
       // Call every afterInTx() event
-      for (const [model, actions] of Object.entries(permissionsMap)) {
+      for (const [model, actions] of Object.entries(eventsMap)) {
         for (const action of actions) {
           for (const handler of events[model][action]) {
             if (handler.afterInTx) {
@@ -104,7 +106,7 @@ export class PrismaryQuery {
     });
 
     // Call every after() event
-    for (const [model, actions] of Object.entries(permissionsMap)) {
+    for (const [model, actions] of Object.entries(eventsMap)) {
       for (const action of actions) {
         for (const handler of events[model][action]) {
           if (handler.after) {
@@ -154,12 +156,40 @@ export class PrismaryQuery {
     return validations;
   }
 
-  async prepare (): Promise<{ readQueryBody: object; permissionsMap: Record<Model, Array<Action>>; }> {
-    const readQueryBody = {};
+  async prepare (): Promise<{
+    readQueryBody: object;
+    eventsMap: Record<Model, Array<Action>>;
+    permissionsMap: Record<Model, Array<Action>>;
+  }> {
+
+    // Retrieve all the select or include clauses
+    const selectOrIncludeClauses = [];
+    selectOrIncludeClauses.push({
+      [this.body.include ? "include" : "select"]: this.body.include || this.body.select || {}
+    });
+    if (this.body.include) selectOrIncludeClauses.push({ include: this.body.include });
+    else if (this.body.select) selectOrIncludeClauses.push({ include: this.body.select });
+    selectOrIncludeClauses.push(casl.selectedFiels);
+    selectOrIncludeClauses.push(events.selectedFields);
+
     const permissionsMap = {};
     // const bodies = [this.body, ...events[this.model].after.bodies, casl.queryBodies];
+
+    // Merge all the select or include clauses to build the readQueryBody one
+    let readQueryBodySelectOrIncludeClause = selectOrIncludeClauses.pop();
+    for (const selectOrIncludeClause of selectOrIncludeClauses) {
+      readQueryBodySelectOrIncludeClause = mergeSelectOrIncludeClauses(this.model, readQueryBodySelectOrIncludeClause, selectOrIncludeClause);
+    }
+
     await this._prepare(this.body, readQueryBody, permissionsMap);
-    return { readQueryBody, permissionsMap };
+    return {
+      readQueryBody: {
+        //@ts-ignore
+        ...readQueryBodySelectOrIncludeClause,
+      },
+      eventsMap: {},
+      permissionsMap: permissionsMap
+    };
   }
 
   _prepare (body: object, readQueryBody: object, permissionsMap: object) {
