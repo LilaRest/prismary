@@ -22,3 +22,5 @@ client.user.onDelete({
   afterInTx: (ctx, abort) => {
   }
 });
+
+client.user;
