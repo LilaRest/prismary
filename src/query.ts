@@ -84,8 +84,8 @@ export class PrismaryQuery {
       }
 
       // Await authorization process
-      const aResult = await this.authorize(readData, permissionsMap);
-      if (aResult !== true) throw aResult;
+      // const aResult = await this.authorize(readData, permissionsMap);
+      // if (aResult !== true) throw aResult;
 
       // Call every afterInTx() event
       for (const [model, actions] of Object.entries(permissionsMap)) {
@@ -148,7 +148,7 @@ export class PrismaryQuery {
         }
       }
       else if (modelsSpecs[model].fields.has(key)) {
-        validations.push(modelsSpecs[model].schema.fields[key].safeParseAsync(value));
+        validations.push(modelsSpecs[model].schema.shape.fields[key].safeParseAsync(value));
       }
     }
     return validations;
@@ -157,7 +157,7 @@ export class PrismaryQuery {
   async prepare (): Promise<{ readQueryBody: object; permissionsMap: Record<Model, Array<Action>>; }> {
     const readQueryBody = {};
     const permissionsMap = {};
-    const bodies = [this.body, ...events[this.model].after.bodies, casl.queryBodies];
+    // const bodies = [this.body, ...events[this.model].after.bodies, casl.queryBodies];
     await this._prepare(this.body, readQueryBody, permissionsMap);
     return { readQueryBody, permissionsMap };
   }

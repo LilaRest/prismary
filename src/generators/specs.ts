@@ -15,7 +15,13 @@ export async function generate (
   const models = options.dmmf.datamodel.models;
   let modelsSpecs = "{";
   models.forEach(async (model) => {
+    const schemaName = model.name + "Schema";
     const modelName = model.name.toLowerCase();
+
+    modelsSpecsFile.addImportDeclaration({
+      moduleSpecifier: `./${schemaName}`,
+      namedImports: [schemaName],
+    });
 
     const fields: string[] = [];
     const relations = {} as { [key: string]: string; };
@@ -26,7 +32,8 @@ export async function generate (
 
     modelsSpecs += `${modelName}: {
       fields: new Set(${JSON.stringify(fields)}),
-      relations: ${JSON.stringify(relations)}
+      relations: ${JSON.stringify(relations)},
+      schema: ${schemaName}
     },`;
   });
   modelsSpecs += "}";

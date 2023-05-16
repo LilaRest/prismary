@@ -8,6 +8,10 @@ Object.defineProperty(exports, "modelsSpecs", {
         return modelsSpecs;
     }
 });
+const _UserSchema = require("./UserSchema");
+const _ProfileSchema = require("./ProfileSchema");
+const _PostSchema = require("./PostSchema");
+const _CommentSchema = require("./CommentSchema");
 const modelsSpecs = {
     user: {
         fields: new Set([
@@ -28,7 +32,8 @@ const modelsSpecs = {
             "friendOf": "user",
             "posts": "post",
             "comments": "comment"
-        }
+        },
+        schema: _UserSchema.UserSchema
     },
     profile: {
         fields: new Set([
@@ -41,7 +46,8 @@ const modelsSpecs = {
         ]),
         relations: {
             "user": "user"
-        }
+        },
+        schema: _ProfileSchema.ProfileSchema
     },
     post: {
         fields: new Set([
@@ -57,7 +63,8 @@ const modelsSpecs = {
         relations: {
             "author": "user",
             "comments": "comment"
-        }
+        },
+        schema: _PostSchema.PostSchema
     },
     comment: {
         fields: new Set([
@@ -72,6 +79,7 @@ const modelsSpecs = {
         relations: {
             "post": "post",
             "author": "user"
-        }
+        },
+        schema: _CommentSchema.CommentSchema
     }
 };
