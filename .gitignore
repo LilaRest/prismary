@@ -7,7 +7,9 @@ dist
 .DS_Store
 lib
 
-// Exclude all distribution files except generator outputs
-dist/*
-!dist/
-!dist/.generated
+dist
+
+// Exclude all demo distribution files except generator outputs
+demo/dist/*
+!demo/dist/
+!demo/dist/.generated
