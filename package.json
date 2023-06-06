@@ -41,7 +41,7 @@
     "@semantic-release/git": "^10.0.1",
     "@types/node": "^20.1.0",
     "@vitest/coverage-c8": "^0.31.0",
-    "conventional-changelog-conventionalcommits": "^5.0.0",
+    "conventional-changelog-conventionalcommits": "^6.0.0",
     "cz-conventional-changelog": "^3.3.0",
     "semantic-release": "^21.0.2",
     "ts-node": "^10.9.1",
