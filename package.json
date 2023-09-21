@@ -33,7 +33,7 @@
     "@trpc/server": "^10.25.0",
     "fast-glob": "^3.2.12",
     "prisma": "^4.14.0",
-    "ts-morph": "^18.0.0",
+    "ts-morph": "^20.0.0",
     "zod": "^3.21.4"
   },
   "devDependencies": {
